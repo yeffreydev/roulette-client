@@ -1,9 +1,9 @@
 import { RouletteNumber } from "../utils/rouletteNumbers/types/types";
 import "./../media/css/RouletteBox.css";
-const RN = ({ n }: { n: RouletteNumber }) => {
+export const RN = ({ n }: { n: RouletteNumber }) => {
   return (
-    <div className={`r-n-child`}>
-      <span className={"r-n-value-" + n.color}>{n.value}</span>
+    <div className={`r-n-child r-n-value-${n.color}`}>
+      <span>{n.value}</span>
     </div>
   );
 };

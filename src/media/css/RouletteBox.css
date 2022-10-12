@@ -37,10 +37,10 @@
 .r-n-child {
   border: 1px solid #000;
   border-radius: 2px;
-  background-color: #def;
   width: 16px;
   display: flex;
   justify-content: center;
+  color: #fff;
   align-items: center;
   margin: 0 7px;
   font-weight: bolder;
@@ -48,11 +48,11 @@
 }
 
 .r-n-value-red {
-  color: #f00;
+  background-color: #f00;
 }
 .r-n-value-black {
-  color: #000;
+  background-color: #000;
 }
 .r-n-value-green {
-  color: #060;
+  background-color: #090;
 }
