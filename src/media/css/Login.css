@@ -1,0 +1,82 @@
+/*form container */
+.l-form {
+	display: flex;
+	background-image: linear-gradient(#345, #123);
+	top: 50%;
+	min-height: 80%;
+	margin: auto;
+	padding: 5px;
+	flex-direction: column;
+	border: 1px solid #123;
+	border-radius: 5px;
+}
+/*form header */
+.l-form-header {
+	text-align: center;
+	font-size: 35px;
+	color: #fef;
+	font-weight: bolder;
+}
+/*form body*/
+.l-form-group {
+	width: 90%;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+
+}
+.l-form-group label {
+	color: #abc;
+	width: 30%;
+	margin-right: 5px;
+}
+
+.l-form-group input {
+	margin-top: 20px;
+	color: #def;
+	background: #1230;
+	border: none;
+	border-bottom: 1px solid #def;
+	flex:1;
+	outline: none;
+}
+#l-form-submit {
+	margin: auto;
+	width: 50%;
+	height: 50px;
+	border: none;
+	font-weight: bolder;
+	background: #123;
+	border-radius: 5px;
+	color: #def;
+	cursor: pointer;
+}
+/*login footer */
+.l-form-footer span {
+	color: #cde;
+}
+.l-form-footer span a {
+	color: #0bf;
+	border-bottom: 1px solid #0bf;
+	text-decoration: none;
+}
+/*media querys for tables*/
+@media screen and (min-width: 700px) {
+	.l-form {
+		width: 80%;
+	}
+}
+
+/*media querys for small pc*/
+@media screen and (min-width: 900px) {
+	.l-form {
+		width: 70%;
+	}
+}
+
+/*media querys for medium pc*/
+@media screen and (min-width: 1200px) {
+	.l-form {
+		width: 50%;
+	}
+}
