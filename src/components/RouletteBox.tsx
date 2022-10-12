@@ -18,7 +18,9 @@ const RouletteBox = ({
     <div className="r-b-c">
       <div className="r-b-c-head">
         <span>{title}</span>
-        <button>fav</button>
+        <button style={{ color: "#ff5000", fontSize: 15, cursor: "pointer" }}>
+          &#9733;
+        </button>
       </div>
       <div className="r-b-c-body">
         {ns.map((item, index) => {

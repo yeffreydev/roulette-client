@@ -1,33 +1,81 @@
 import "./../media/css/AppHeader.css";
 import { MdAdd } from "react-icons/md";
-import { FiSettings } from "react-icons/fi";
+import { FiSettings, FiLogIn } from "react-icons/fi";
 import { RN } from "./RouletteBox";
+import { IoMdCreate } from "react-icons/io";
+import { FaTimes, FaHistory, FaExchangeAlt } from "react-icons/fa";
 
-const AppHeaderMenu = () => {
+export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
   return (
-    <div>
-      <span>manage history</span>
-      <span>change other roulette </span>
-      <span>create other session</span>
-      <span>create other roulette</span>
-      <span>close roulette</span>
-      <span>logout</span>
+    <div className="a-h-m" style={{ position: "absolute" }}>
+      <div className="a-h-m-head">
+        <div>
+          <div>
+            <span>username: </span>
+            <span>roulette name</span>
+          </div>
+        </div>
+        <div className="close-a-h-m" onClick={closeMenu}>
+          <FaTimes />
+        </div>
+      </div>
+      <div className="a-h-m-content">
+        <div>
+          manage Roulette{" "}
+          <span>
+            <FaHistory />
+          </span>
+        </div>
+        <div>
+          change other roulette
+          <span>
+            <FaExchangeAlt />
+          </span>
+        </div>
+        <div>
+          create other session
+          <span>
+            <IoMdCreate />
+          </span>
+        </div>
+        <div>
+          create other roulette
+          <span>
+            <IoMdCreate />
+          </span>
+        </div>
+        <div>
+          close roulette <FaTimes />
+        </div>
+        <div>
+          logout
+          <span>
+            <FiLogIn />
+          </span>
+        </div>
+      </div>
     </div>
   );
 };
-const AppHeader = () => {
+const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
   // pass button actions to home component
   return (
     <div className="a-h">
       <div className="a-h-1">
         <div>
-          <input type={"number"} min={0} max={36} maxLength={2} />
+          <input
+            placeholder="number"
+            type={"number"}
+            min={0}
+            max={36}
+            maxLength={2}
+          />
           <button>
             <MdAdd />
           </button>
         </div>
 
-        <button>
+        <button onClick={openMenu} style={{ cursor: "pointer" }}>
           <FiSettings />
         </button>
         {/* open options
@@ -44,7 +92,7 @@ const AppHeader = () => {
         <div>
           <span>session 1</span>
         </div>
-        <div>session 2</div>
+        <div className="session-alg-focus">session 2</div>
         <div>session 3</div>
         <div>session 4</div>
       </div>

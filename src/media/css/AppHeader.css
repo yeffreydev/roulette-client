@@ -33,6 +33,10 @@
   margin-right: 10px;
   cursor: pointer;
 }
+.sessions-algs .session-alg-focus {
+  background-color: #abf;
+  border-bottom: 2px solid #f0f;
+}
 
 .fav-algs {
   display: flex;
@@ -80,4 +84,52 @@
   border-radius: 2px;
   min-width: 15px;
   margin: 5px;
+}
+
+/* app header menu  */
+
+.a-h-m {
+  display: block;
+  position: sticky;
+  width: 100%;
+  background-color: #123d;
+  height: 100%;
+  overflow: auto;
+  z-index: 3;
+  color: #def;
+}
+
+.a-h-m-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.a-h-m-head {
+  height: 40px;
+}
+.close-a-h-m {
+  background-color: #012;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.a-h-m-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.a-h-m-content > div {
+  width: 100%;
+  margin-top: 7px;
+  cursor: pointer;
+  text-align: right;
+  border-bottom: 1px solid #456;
+}
+
+.a-h-m-content > div > * {
+  margin-left: 10px;
 }
