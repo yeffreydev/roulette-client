@@ -1,5 +1,6 @@
 /*form container */
 .l-form {
+	width:95%;
 	display: flex;
 	background-image: linear-gradient(#345, #123);
 	top: 50%;

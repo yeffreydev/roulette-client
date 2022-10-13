@@ -1,6 +1,7 @@
 /*form container */
 .r-form{
 	display: flex;
+	width: 95%;
 	background-image: linear-gradient(#345, #123);
 	min-height: 80%;
 	margin: auto;
