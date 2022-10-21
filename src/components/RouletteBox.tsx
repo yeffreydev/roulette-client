@@ -1,4 +1,5 @@
 import { RouletteNumber } from "../utils/rouletteNumbers/types/types";
+import ViewOrderNumber from './ViewOrderNumber';
 import "./../media/css/RouletteBox.css";
 export const RN = ({ n }: { n: RouletteNumber }) => {
   return (

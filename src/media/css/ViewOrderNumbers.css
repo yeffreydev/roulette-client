@@ -1,0 +1,58 @@
+/*container view order numbers
+ */
+.c-v-o-n {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	background: #234;
+	border: 1px solid #def;
+	border-radius: 3px;
+}
+
+/*container for 0 number*/
+
+.c-v-o-n-child_1 {
+	width: 10px;
+	height: 100%;
+}
+
+/*container for rest of numbers 1-36*/
+.c-v-o-n-child_2 {
+	flex: 1;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.c-v-o-n-child_2-row-1, .c-v-o-n-child_2-row-2, .c-v-o-n-child_2-row-3 {
+	position: relative;
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+}
+
+
+/*number for view order number*/
+.number-v-o-n {
+	flex: 1;
+	border: 1px solid #def;
+	height: 100%;
+}
+.number-v-o-n > * {
+	color: #def;
+}
+
+.number-v-o-n.active {
+	opacity: 0.6;
+}
+.value-v-o-n-green {
+	background: #070;
+}
+.value-v-o-n-red {
+	background: #a00;
+}
+.value-v-o-n-black {
+	background: #000;
+}
