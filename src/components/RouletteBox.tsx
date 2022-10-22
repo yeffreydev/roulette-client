@@ -1,4 +1,5 @@
 import { RouletteNumber } from "../utils/rouletteNumbers/types/types";
+import {orderRouletteNumbers} from '../utils/rouletteNumbers';
 import ViewOrderNumber from './ViewOrderNumber';
 import "./../media/css/RouletteBox.css";
 export const RN = ({ n }: { n: RouletteNumber }) => {
@@ -28,6 +29,7 @@ const RouletteBox = ({
           return <RN key={index} n={item} />;
         })}
       </div>
+      <ViewOrderNumber alg_numbs={[3,5,2,8,7,13]} numbers={orderRouletteNumbers} />
     </div>
   );
 };

@@ -14,7 +14,18 @@
 /*container for 0 number*/
 
 .c-v-o-n-child_1 {
-	width: 10px;
+	width: 16px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.c-v-o-n-child_1 > .number-v-o-n {
+	width: 100%;
+	background: #050;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	height: 100%;
 }
 
@@ -39,20 +50,20 @@
 	flex: 1;
 	border: 1px solid #def;
 	height: 100%;
-}
-.number-v-o-n > * {
 	color: #def;
 }
 
 .number-v-o-n.active {
-	opacity: 0.6;
+	color: #000;
+	background: #def;
+	border: 1px solid #000;
 }
-.value-v-o-n-green {
+.number-v-o-n-green {
 	background: #070;
 }
-.value-v-o-n-red {
+.number-v-o-n-red {
 	background: #a00;
 }
-.value-v-o-n-black {
+.number-v-o-n-black {
 	background: #000;
 }

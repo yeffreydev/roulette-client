@@ -1,9 +1,9 @@
 import './../media/css/ViewOrderNumber.css';
 import {RouletteNumber} from '../utils/rouletteNumbers/types/types';
-const ViewOrderNumber = ({numbers}:{numbers: number[]}) => {
+const ViewOrderNumber = ({numbers, alg_numbs}:{numbers:  RouletteNumber[], alg_numbs: number[]}) => {
 	return <div className="c-v-o-n">
 	<div className="c-v-o-n-child_1">
-		<div>
+		<div className="number-v-o-n">
 			<span>0</span>
 		</div>
 	</div>
@@ -12,9 +12,16 @@ const ViewOrderNumber = ({numbers}:{numbers: number[]}) => {
 
 		{
 		numbers.map((n,i) => {
-		if (n >0&&n<=12){
-		return <div key={i}>
-			<span>{n}</span>
+	/*	if (n.value === 3) 
+		{
+		return <div className={"number-v-o-n number-v-o-n-"+n.color}>
+		<span>{n.value}</span>
+		</div>
+		}*/
+		if (i % 3 ===0 && n.value < 36){
+		let num = numbers.find(item => item.value === n.value +3)
+		return <div className={"number-v-o-n  number-v-o-n-"+(num ? num.color : '')+(alg_numbs.includes(num?num.value:0)? ' active':'')} key={i}>
+			<span>{(num ?num.value : 0)}</span>
 		</div>
 		} else {
 		return null;
@@ -26,9 +33,10 @@ const ViewOrderNumber = ({numbers}:{numbers: number[]}) => {
 		<div className="c-v-o-n-child_2-row-2">
 		{
 		numbers.map((n,i) => {
-		if (n > 12 && n<=24) {
-		return <div key={i}>
-			<span>{n}</span>
+		if (n.value %3 ===0 && n.value < 36) {
+		let num = numbers.find(item => item.value === n.value +2)
+		return <div className={"number-v-o-n number-v-o-n-"+(num ? num.color : '')+(alg_numbs.includes(num ? num.value:0)?' active':'')} key={i}>
+			<span>{num ? num.value : 0}</span>
 		</div>
 		}else {
 		return null
@@ -36,12 +44,13 @@ const ViewOrderNumber = ({numbers}:{numbers: number[]}) => {
 		})
 		}
 		</div>
-		<div className="c-v-o-n-child_3-row-3">
+		<div className="c-v-o-n-child_2-row-3">
 		{
 		numbers.map((n,i) => {
-		if (n > 24 && n <=36) {
-		return <div key={i}>
-			<span>{n}</span>
+		if (n.value %3 ===0 && n.value < 36) {
+		let num = numbers.find(item => item.value === n.value + 1)
+		return <div className={"number-v-o-n  number-v-o-n-"+(num ?num.color : '')+(alg_numbs.includes(num ?num.value :0) ? ' active': '')} key={i}>
+			<span>{num?num.value : 0}</span>
 		</div>
 		}
 		return null;
