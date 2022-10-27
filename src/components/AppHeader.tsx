@@ -15,7 +15,7 @@ import sessionApi from "./../api/sessionRoulette";
 import actionsRoulette from "../context/actions/roulette";
 
 export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
-  const { dispatch, auth, roulettes } = useContext(AppContext);
+  const { dispatch, auth, roulettes, focusRoulette } = useContext(AppContext);
   const [roulette, setRoulette] = useState<RouletteI | null>(null);
   const [session, setSession] = useState<SessionRouletteI | null>(null);
   const cookies = new Cookies();
@@ -23,6 +23,8 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
     cookies.remove("auth");
     removeToken(dispatch);
   };
+  const addFocusRoulette = (r: RouletteI) =>
+    actionsRoulette.addFocusRoulette(r, dispatch);
   const createRoulette = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const res =
@@ -52,7 +54,7 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
         <div>
           <div>
             <span>username: </span>
-            <span>roulette name</span>
+            <span>{focusRoulette ? focusRoulette.name : "null "}</span>
           </div>
         </div>
         <div className="close-a-h-m" onClick={closeMenu}>
@@ -74,7 +76,11 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
         </div>
         <div>
           {roulettes.map((item, index) => {
-            return <div key={index}>{item.name}</div>;
+            return (
+              <div key={index} onClick={() => addFocusRoulette(item)}>
+                {item.name}
+              </div>
+            );
           })}
         </div>
         <div>

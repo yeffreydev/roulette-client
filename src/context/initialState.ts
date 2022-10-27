@@ -8,6 +8,12 @@ const initalStateApp: AppStateI = {
     auth: false,
   },
   roulettes: [],
+  focusRoulette: null,
+  sessions: {
+    loading: true,
+    data: null,
+  },
+  focusSession: null,
 };
 
 export default initalStateApp;
