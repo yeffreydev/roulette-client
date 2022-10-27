@@ -27,24 +27,27 @@ const Home = () => {
   };
   const closeAHMenu = () => setHomeState({ ...homeState, IsAHMOpen: false });
   return (
-    <Main>
-      {homeState.IsAHMOpen ? <AppHeaderMenu closeMenu={closeAHMenu} /> : null}
-      <div className="container-home">
-        <AppHeader openMenu={openAHMenu} />
-        <div className="algs-container">
-          <RouletteBox ns={rouletteNumbers} title={"hola"} />
-          <RouletteBox
-            ns={rouletteNumbers}
-            title={"this is a other algorithm"}
-          />
-          <RouletteBox ns={rouletteNumbers} title={"xd this is p"} />
-          <RouletteBox ns={rouletteNumbers} title={"like you"} />
-          <RouletteBox ns={rouletteNumbers} title={"a need one"} />
-          <RouletteBox ns={rouletteNumbers} title={"hola"} />
-          <RouletteBox ns={rouletteNumbers} title={"hola"} />
+    <>
+      <div style={{ height: "60px", background: "#234" }}></div>
+      <Main>
+        {homeState.IsAHMOpen ? <AppHeaderMenu closeMenu={closeAHMenu} /> : null}
+        <div className="container-home">
+          <AppHeader openMenu={openAHMenu} />
+          <div className="algs-container">
+            <RouletteBox ns={rouletteNumbers} title={"hola"} />
+            <RouletteBox
+              ns={rouletteNumbers}
+              title={"this is a other algorithm"}
+            />
+            <RouletteBox ns={rouletteNumbers} title={"xd this is p"} />
+            <RouletteBox ns={rouletteNumbers} title={"like you"} />
+            <RouletteBox ns={rouletteNumbers} title={"a need one"} />
+            <RouletteBox ns={rouletteNumbers} title={"hola"} />
+            <RouletteBox ns={rouletteNumbers} title={"hola"} />
+          </div>
         </div>
-      </div>
-    </Main>
+      </Main>
+    </>
   );
 };
 export default Home;

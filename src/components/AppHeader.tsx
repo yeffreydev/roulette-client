@@ -4,8 +4,18 @@ import { FiSettings, FiLogIn } from "react-icons/fi";
 import { RN } from "./RouletteBox";
 import { IoMdCreate } from "react-icons/io";
 import { FaTimes, FaHistory, FaExchangeAlt } from "react-icons/fa";
+import Cookies from "universal-cookie";
+import { removeToken } from "../context/AppActions";
+import { useContext } from "react";
+import AppContext from "../context/AppContext";
 
 export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
+  const { dispatch } = useContext(AppContext);
+  const cookies = new Cookies();
+  const logOut = () => {
+    cookies.remove("auth");
+    removeToken(dispatch);
+  };
   return (
     <div className="a-h-m" style={{ position: "absolute" }}>
       <div className="a-h-m-head">
@@ -33,21 +43,12 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
           </span>
         </div>
         <div>
-          create other session
-          <span>
-            <IoMdCreate />
-          </span>
-        </div>
-        <div>
           create other roulette
           <span>
             <IoMdCreate />
           </span>
         </div>
-        <div>
-          close roulette <FaTimes />
-        </div>
-        <div>
+        <div onClick={logOut}>
           logout
           <span>
             <FiLogIn />

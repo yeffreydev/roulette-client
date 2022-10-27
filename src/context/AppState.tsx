@@ -14,6 +14,7 @@ const AppState = ({ children }: { children: ReactNode }) => {
     const auth = cookies.get("auth");
     if (auth) return addToken(auth.token, dispatch);
     noTokenProvider(dispatch);
+    //eslint-disable-next-line
   }, []);
 
   return (

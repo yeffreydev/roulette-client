@@ -30,8 +30,9 @@ const authRegister = async (user: UserI) => {
     res: await res.json(),
   };
 };
-
-export default {
+const auth = {
   authLogin,
   authRegister,
 };
+
+export default auth;
