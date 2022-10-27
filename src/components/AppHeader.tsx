@@ -3,19 +3,39 @@ import { MdAdd } from "react-icons/md";
 import { FiSettings, FiLogIn } from "react-icons/fi";
 import { RN } from "./RouletteBox";
 import { IoMdCreate } from "react-icons/io";
-import { FaTimes, FaHistory, FaExchangeAlt } from "react-icons/fa";
+import { FaTimes, FaHistory, FaExchangeAlt, FaPlus } from "react-icons/fa";
 import Cookies from "universal-cookie";
 import { removeToken } from "../context/AppActions";
-import { useContext } from "react";
+import { FormEvent, useContext, useState } from "react";
 import AppContext from "../context/AppContext";
+import { SessionRouletteI } from "../types/SessionRoulette";
+import { RouletteI } from "../types/Roulette";
+import rouletteApi from "./../api/roulette";
+import sessionApi from "./../api/sessionRoulette";
 
 export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
-  const { dispatch } = useContext(AppContext);
+  const { dispatch, auth } = useContext(AppContext);
+  const [roulette, setRoulette] = useState<RouletteI | null>(null);
+  const [session, setSession] = useState<SessionRouletteI | null>(null);
   const cookies = new Cookies();
   const logOut = () => {
     cookies.remove("auth");
     removeToken(dispatch);
   };
+  const createRoulette = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const res =
+      roulette && (await rouletteApi.postRoulette(auth.token, roulette));
+    console.log(res);
+  };
+  const createSession = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const res =
+      session && (await sessionApi.postSessionRoulette(auth.token, session));
+    console.log(res);
+  };
+  const changeRouletteName = (e: FormEvent<HTMLInputElement>) =>
+    setRoulette({ name: e.currentTarget.value });
   return (
     <div className="a-h-m" style={{ position: "absolute" }}>
       <div className="a-h-m-head">
@@ -48,6 +68,12 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
             <IoMdCreate />
           </span>
         </div>
+        <div>
+          <form onSubmit={createRoulette} action="">
+            <input onChange={changeRouletteName} placeholder="new roulette" />
+            <input type="submit" value="create" />
+          </form>
+        </div>
         <div onClick={logOut}>
           logout
           <span>
@@ -79,15 +105,6 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
         <button onClick={openMenu} style={{ cursor: "pointer" }}>
           <FiSettings />
         </button>
-        {/* open options
-         * maange history
-         * change other roulette
-         * create otehr session
-         * create other roulette
-         * close roulette
-         * user setting
-         * logout
-         */}
       </div>
       <div className="sessions-algs">
         <div>
@@ -96,6 +113,17 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
         <div className="session-alg-focus">session 2</div>
         <div>session 3</div>
         <div>session 4</div>
+        <div>
+          <button>
+            <FaPlus />
+          </button>
+        </div>
+        <div>
+          <form>
+            <input placeholder="new session" />
+            <button>create</button>
+          </form>
+        </div>
       </div>
       <div className="fav-algs">
         <div className="fav-alg">
