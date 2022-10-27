@@ -6,15 +6,16 @@ import { IoMdCreate } from "react-icons/io";
 import { FaTimes, FaHistory, FaExchangeAlt, FaPlus } from "react-icons/fa";
 import Cookies from "universal-cookie";
 import { removeToken } from "../context/AppActions";
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useState, useEffect } from "react";
 import AppContext from "../context/AppContext";
 import { SessionRouletteI } from "../types/SessionRoulette";
 import { RouletteI } from "../types/Roulette";
 import rouletteApi from "./../api/roulette";
 import sessionApi from "./../api/sessionRoulette";
+import actionsRoulette from "../context/actions/roulette";
 
 export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
-  const { dispatch, auth } = useContext(AppContext);
+  const { dispatch, auth, roulettes } = useContext(AppContext);
   const [roulette, setRoulette] = useState<RouletteI | null>(null);
   const [session, setSession] = useState<SessionRouletteI | null>(null);
   const cookies = new Cookies();
@@ -36,6 +37,15 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
   };
   const changeRouletteName = (e: FormEvent<HTMLInputElement>) =>
     setRoulette({ name: e.currentTarget.value });
+  const getRoulettesByUserId = async () => {
+    const res = await rouletteApi.getRouletteByUserId(auth.token);
+    if (res.status === 200) {
+      actionsRoulette.addRoulettes(res.res, dispatch);
+    }
+  };
+  useEffect(() => {
+    getRoulettesByUserId();
+  }, []);
   return (
     <div className="a-h-m" style={{ position: "absolute" }}>
       <div className="a-h-m-head">
@@ -61,6 +71,11 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
           <span>
             <FaExchangeAlt />
           </span>
+        </div>
+        <div>
+          {roulettes.map((item, index) => {
+            return <div key={index}>{item.name}</div>;
+          })}
         </div>
         <div>
           create other roulette
