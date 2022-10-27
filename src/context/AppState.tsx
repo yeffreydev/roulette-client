@@ -18,7 +18,9 @@ const AppState = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ auth: state.auth, dispatch }}>
+    <AppContext.Provider
+      value={{ auth: state.auth, dispatch, roulettes: state.roulettes }}
+    >
       {children}
     </AppContext.Provider>
   );

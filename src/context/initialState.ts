@@ -7,6 +7,7 @@ const initalStateApp: AppStateI = {
     token: "",
     auth: false,
   },
+  roulettes: [],
 };
 
 export default initalStateApp;
