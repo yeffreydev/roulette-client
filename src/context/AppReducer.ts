@@ -79,6 +79,39 @@ const appReducer = (state: AppStateI, action: AppActionI): AppStateI => {
     case ActionTypes.REMOVE_FOCUS_SESSION: {
       return { ...state, focusSession: null };
     }
+    //numbers
+    case ActionTypes.ADD_NUMBER: {
+      return {
+        ...state,
+        numbers: { loading: false, data: [...state.numbers.data, payload] },
+      };
+    }
+    case ActionTypes.ADD_NUMBERS: {
+      return { ...state, numbers: { loading: false, data: payload } };
+    }
+    case ActionTypes.UPDATE_NUMBER: {
+      return {
+        ...state,
+        numbers: {
+          loading: false,
+          data: state.numbers.data.map(
+            (item) => item.id === payload.id && payload
+          ),
+        },
+      };
+    }
+    case ActionTypes.REMOVE_NUMBER: {
+      return {
+        ...state,
+        numbers: {
+          loading: false,
+          data: state.numbers.data.filter((item) => item.id !== payload),
+        },
+      };
+    }
+    case ActionTypes.REMOVE_NUMBERS: {
+      return { ...state, numbers: { loading: false, data: [] } };
+    }
     default: {
       return state;
     }

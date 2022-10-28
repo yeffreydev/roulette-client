@@ -26,6 +26,7 @@ const AppState = ({ children }: { children: ReactNode }) => {
         focusRoulette: state.focusRoulette,
         sessions: state.sessions,
         focusSession: state.focusSession,
+        numbers: state.numbers,
       }}
     >
       {children}

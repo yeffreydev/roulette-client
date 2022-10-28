@@ -1,4 +1,5 @@
 import { Dispatch } from "react";
+import { NumberRouletteI } from "../types/NumberRoulette";
 import { RouletteI } from "../types/Roulette";
 import { SessionRouletteI } from "../types/SessionRoulette";
 export enum ActionTypes {
@@ -19,6 +20,12 @@ export enum ActionTypes {
   //focus session
   ADD_FOCUS_SESSION = "ADD_FOCUS_SESSION",
   REMOVE_FOCUS_SESSION = "REMOVE_FOCUS_SESSION",
+  //numbers
+  ADD_NUMBER = "ADD_NUMBER",
+  ADD_NUMBERS = "ADD_NUMBERS",
+  REMOVE_NUMBER = "REMOVE_NUMBER",
+  UPDATE_NUMBER = "UPDATE_NUMBER",
+  REMOVE_NUMBERS = "REMOVE_NUMBERS",
 }
 export interface AuthI {
   auth: boolean;
@@ -36,7 +43,7 @@ export interface ActionType<Type> {
 
 export interface DataObject<Type> {
   loading: boolean;
-  data: Type | null;
+  data: Type;
 }
 
 export interface AppStateI {
@@ -44,6 +51,7 @@ export interface AppStateI {
   auth: AuthI;
   roulettes: RouletteI[];
   focusRoulette: RouletteI | null;
-  sessions: DataObject<SessionRouletteI[]>;
+  sessions: DataObject<SessionRouletteI[] | null>;
   focusSession: SessionRouletteI | null;
+  numbers: DataObject<NumberRouletteI[]>;
 }

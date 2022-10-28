@@ -11,9 +11,13 @@ const initalStateApp: AppStateI = {
   focusRoulette: null,
   sessions: {
     loading: true,
-    data: null,
+    data: [],
   },
   focusSession: null,
+  numbers: {
+    loading: true,
+    data: [],
+  },
 };
 
 export default initalStateApp;
