@@ -18,6 +18,7 @@ const initalStateApp: AppStateI = {
     loading: true,
     data: [],
   },
+  algs: [],
 };
 
 export default initalStateApp;

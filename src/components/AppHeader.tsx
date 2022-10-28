@@ -15,9 +15,9 @@ import sessionApi from "./../api/sessionRoulette";
 import actionsRoulette from "../context/actions/roulette";
 import actionsSession from "../context/actions/session";
 import actionsNumber from "../context/actions/number";
-import { NumberRouletteI } from "../types/NumberRoulette";
+import { NumberRouletteI, NumberRouletteInputI } from "../types/NumberRoulette";
 import { getNumberFromRoulette } from "../utils/rouletteNumbers";
-import { RouletteNumber } from "../utils/rouletteNumbers/types/types";
+import algorithmActions from "../context/actions/algorithm";
 
 export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
   const { dispatch, auth, roulettes, focusRoulette } = useContext(AppContext);
@@ -113,10 +113,8 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
   const [session, setSession] = useState<SessionRouletteI | null>({
     name: "",
   });
-  const [number, setNumber] = useState<NumberRouletteI>({
-    sessionId: NaN,
-    id: NaN,
-    valueNumber: NaN,
+  const [number, setNumber] = useState<NumberRouletteInputI>({
+    valueNumber: "",
   });
 
   // pass button actions to home component
@@ -131,7 +129,7 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
   };
   const selectNumber = (n: NumberRouletteI) => {
     setSelectedNumber(n);
-    setNumber({ id: NaN, valueNumber: NaN });
+    setNumber({ valueNumber: "" });
   };
   const createNumber = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -140,20 +138,24 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
         number &&
         focusSession &&
         (await numberApi.postNumberRoulette(auth.token, {
-          valueNumber: number.valueNumber,
+          valueNumber:
+            typeof number.valueNumber === "string"
+              ? parseInt(number.valueNumber)
+              : number.valueNumber,
           rouletteId: focusRoulette?.id,
           sessionId: focusSession.id,
         }));
       if (res?.status !== 200) {
         return "error";
       }
-      console.log(res);
+      algorithmActions.addAlgs(res.res.algs, dispatch);
+      setNumber({ valueNumber: "" });
       return actionsNumber.addNumber(res.res.number, dispatch);
     }
     const res = await numberApi.putNumberRoulette(auth.token, selectedNumber);
     if (res.status === 200) {
+      algorithmActions.addAlgs(res.res.algs, dispatch);
       actionsNumber.updateNumber(selectedNumber, dispatch);
-      console.log(res);
     }
   };
   const createSession = async (e: FormEvent<HTMLFormElement>) => {
@@ -178,11 +180,11 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
         selectedNumber.id ? selectedNumber.id : NaN
       );
       if (res.status === 200) {
+        algorithmActions.addAlgs(res.res.algs, dispatch);
         actionsNumber.removeNumber(
           selectedNumber.id ? selectedNumber.id : NaN,
           dispatch
         );
-        console.log(res);
         setSelectedNumber(null);
       }
     }
@@ -196,7 +198,6 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
         auth.token,
         focusRoulette.id ? focusRoulette.id : ""
       ));
-    console.log(res);
     if (res?.status === 200) {
       actionsSession.addSessions(res.res, dispatch);
     }
@@ -209,9 +210,9 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
         focusSession.id ? focusSession.id : 0
       ));
     if (res?.status == 200) {
+      algorithmActions.addAlgs(res.res.algs, dispatch);
       actionsNumber.addNumbers(res.res.numbers, dispatch);
     }
-    console.log(res);
   };
   useEffect(() => {
     getSessions();

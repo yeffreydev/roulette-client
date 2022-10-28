@@ -1,5 +1,8 @@
 import { RouletteNumber } from "../utils/rouletteNumbers/types/types";
-import { orderRouletteNumbers } from "../utils/rouletteNumbers";
+import {
+  orderRouletteNumbers,
+  getNumberFromRoulette,
+} from "../utils/rouletteNumbers";
 import ViewOrderNumber from "./ViewOrderNumber";
 import "./../media/css/RouletteBox.css";
 export const RN = ({ n, click }: { n: RouletteNumber; click: () => void }) => {
@@ -9,13 +12,7 @@ export const RN = ({ n, click }: { n: RouletteNumber; click: () => void }) => {
     </div>
   );
 };
-const RouletteBox = ({
-  ns,
-  title,
-}: {
-  ns: RouletteNumber[];
-  title: string;
-}) => {
+const RouletteBox = ({ ns, title }: { ns: number[]; title: string }) => {
   return (
     <div className="r-b-c">
       <div className="r-b-c-head">
@@ -26,7 +23,14 @@ const RouletteBox = ({
       </div>
       <div className="r-b-c-body">
         {ns.map((item, index) => {
-          return <RN click={() => {}} key={index} n={item} />;
+          const num = getNumberFromRoulette(item);
+          return (
+            <RN
+              click={() => {}}
+              key={index}
+              n={num ? num : { id: 0, value: 0, color: "green" }}
+            />
+          );
         })}
       </div>
       <ViewOrderNumber

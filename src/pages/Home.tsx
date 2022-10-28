@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./../media/css/Home.css";
 import { AppHeaderMenu } from "../components/AppHeader";
 import Main from "./../components/Main";
 import AppHeader from "../components/AppHeader";
 import RouletteBox from "../components/RouletteBox";
+import AppContext from "../context/AppContext";
 const rouletteNumbers = [
   { id: 3, value: 9, color: "green" },
   { id: 3, value: 9, color: "red" },
@@ -20,6 +21,7 @@ const rouletteNumbers = [
   { id: 3, value: 9, color: "black" },
 ];
 const Home = () => {
+  const { algs } = useContext(AppContext);
   const [homeState, setHomeState] = useState({ IsAHMOpen: false });
   //open app heade menu
   const openAHMenu = () => {
@@ -34,16 +36,15 @@ const Home = () => {
         <div className="container-home">
           <AppHeader openMenu={openAHMenu} />
           <div className="algs-container">
-            <RouletteBox ns={rouletteNumbers} title={"hola"} />
-            <RouletteBox
-              ns={rouletteNumbers}
-              title={"this is a other algorithm"}
-            />
-            <RouletteBox ns={rouletteNumbers} title={"xd this is p"} />
-            <RouletteBox ns={rouletteNumbers} title={"like you"} />
-            <RouletteBox ns={rouletteNumbers} title={"a need one"} />
-            <RouletteBox ns={rouletteNumbers} title={"hola"} />
-            <RouletteBox ns={rouletteNumbers} title={"hola"} />
+            {algs.map((item, index) => {
+              return (
+                <RouletteBox
+                  key={index}
+                  ns={item.nums.map((item) => item.number)}
+                  title={item.name}
+                />
+              );
+            })}
           </div>
         </div>
       </Main>

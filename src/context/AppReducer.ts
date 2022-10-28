@@ -112,6 +112,13 @@ const appReducer = (state: AppStateI, action: AppActionI): AppStateI => {
     case ActionTypes.REMOVE_NUMBERS: {
       return { ...state, numbers: { loading: false, data: [] } };
     }
+    //algs
+    case ActionTypes.ADD_ALGS: {
+      return { ...state, algs: payload };
+    }
+    case ActionTypes.REMOVE_ALGS: {
+      return { ...state, algs: [] };
+    }
     default: {
       return state;
     }

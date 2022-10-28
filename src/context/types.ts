@@ -1,4 +1,5 @@
 import { Dispatch } from "react";
+import { AlgorithmI } from "../types/Algorithm";
 import { NumberRouletteI } from "../types/NumberRoulette";
 import { RouletteI } from "../types/Roulette";
 import { SessionRouletteI } from "../types/SessionRoulette";
@@ -26,6 +27,9 @@ export enum ActionTypes {
   REMOVE_NUMBER = "REMOVE_NUMBER",
   UPDATE_NUMBER = "UPDATE_NUMBER",
   REMOVE_NUMBERS = "REMOVE_NUMBERS",
+  //algs
+  ADD_ALGS = "ADD_ALGS",
+  REMOVE_ALGS = "REMOVE_ALGS",
 }
 export interface AuthI {
   auth: boolean;
@@ -54,4 +58,5 @@ export interface AppStateI {
   sessions: DataObject<SessionRouletteI[] | null>;
   focusSession: SessionRouletteI | null;
   numbers: DataObject<NumberRouletteI[]>;
+  algs: AlgorithmI[];
 }
