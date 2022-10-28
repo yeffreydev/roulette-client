@@ -1,5 +1,4 @@
 import "./../media/css/AppHeader.css";
-import { MdAdd } from "react-icons/md";
 import { FiSettings, FiLogIn } from "react-icons/fi";
 import { RN } from "./RouletteBox";
 import { IoMdCreate } from "react-icons/io";
@@ -18,6 +17,7 @@ import actionsSession from "../context/actions/session";
 import actionsNumber from "../context/actions/number";
 import { NumberRouletteI } from "../types/NumberRoulette";
 import { getNumberFromRoulette } from "../utils/rouletteNumbers";
+import { RouletteNumber } from "../utils/rouletteNumbers/types/types";
 
 export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
   const { dispatch, auth, roulettes, focusRoulette } = useContext(AppContext);
@@ -107,37 +107,54 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
 const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
   const { auth, focusRoulette, dispatch, sessions, focusSession, numbers } =
     useContext(AppContext);
+  const [selectedNumber, setSelectedNumber] = useState<NumberRouletteI | null>(
+    null
+  );
   const [session, setSession] = useState<SessionRouletteI | null>({
     name: "",
   });
-  const [number, setNumber] = useState<NumberRouletteI | null>(null);
+  const [number, setNumber] = useState<NumberRouletteI>({
+    sessionId: NaN,
+    id: NaN,
+    valueNumber: NaN,
+  });
 
   // pass button actions to home component
 
-  const changeNumber = (e: FormEvent<HTMLInputElement>) =>
-    setNumber({ ...number, valueNumber: parseInt(e.currentTarget.value) });
-
+  const changeNumber = (e: FormEvent<HTMLInputElement>) => {
+    !selectedNumber
+      ? setNumber({ ...number, valueNumber: parseInt(e.currentTarget.value) })
+      : setSelectedNumber({
+          ...selectedNumber,
+          valueNumber: parseInt(e.currentTarget.value),
+        });
+  };
+  const selectNumber = (n: NumberRouletteI) => {
+    setSelectedNumber(n);
+    setNumber({ id: NaN, valueNumber: NaN });
+  };
   const createNumber = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    number &&
-      focusSession &&
-      console.log({
-        numberValue: number.valueNumber,
-        rouletteId: focusRoulette?.id,
-        sessionId: focusSession.id,
-      });
-    const res =
-      number &&
-      focusSession &&
-      (await numberApi.postNumberRoulette(auth.token, {
-        valueNumber: number.valueNumber,
-        rouletteId: focusRoulette?.id,
-        sessionId: focusSession.id,
-      }));
-    if (res?.status === 200) {
-      actionsNumber.addNumber(res.res, dispatch);
+    if (!selectedNumber) {
+      const res =
+        number &&
+        focusSession &&
+        (await numberApi.postNumberRoulette(auth.token, {
+          valueNumber: number.valueNumber,
+          rouletteId: focusRoulette?.id,
+          sessionId: focusSession.id,
+        }));
+      if (res?.status !== 200) {
+        return "error";
+      }
+      console.log(res);
+      return actionsNumber.addNumber(res.res.number, dispatch);
     }
-    console.log(res);
+    const res = await numberApi.putNumberRoulette(auth.token, selectedNumber);
+    if (res.status === 200) {
+      actionsNumber.updateNumber(selectedNumber, dispatch);
+      console.log(res);
+    }
   };
   const createSession = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -152,6 +169,22 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
     if (res?.status === 200) {
       actionsSession.addSession(res.res, dispatch);
       actionsSession.addSessionFocus(res.res, dispatch);
+    }
+  };
+  const deleteNumber = async () => {
+    if (selectedNumber) {
+      const res = await numberApi.deleteNumberRoulette(
+        auth.token,
+        selectedNumber.id ? selectedNumber.id : NaN
+      );
+      if (res.status === 200) {
+        actionsNumber.removeNumber(
+          selectedNumber.id ? selectedNumber.id : NaN,
+          dispatch
+        );
+        console.log(res);
+        setSelectedNumber(null);
+      }
     }
   };
   const changeSessionName = (e: FormEvent<HTMLInputElement>) =>
@@ -176,7 +209,7 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
         focusSession.id ? focusSession.id : 0
       ));
     if (res?.status == 200) {
-      actionsNumber.addNumbers(res.res, dispatch);
+      actionsNumber.addNumbers(res.res.numbers, dispatch);
     }
     console.log(res);
   };
@@ -187,20 +220,6 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
   return (
     <div className="a-h">
       <div className="a-h-1">
-        <form onSubmit={createNumber}>
-          <input
-            placeholder="number"
-            type={"number"}
-            onChange={changeNumber}
-            min={0}
-            max={36}
-            maxLength={2}
-          />
-          <button type="submit">
-            <MdAdd />
-          </button>
-        </form>
-
         <button onClick={openMenu} style={{ cursor: "pointer" }}>
           <FiSettings />
         </button>
@@ -266,9 +285,37 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
         {numbers.data.map((item, index) => {
           let n = getNumberFromRoulette(item.valueNumber);
           return (
-            <RN key={index} n={n ? n : { id: 0, value: 0, color: "#000" }} />
+            <RN
+              key={index}
+              click={() => selectNumber(item)}
+              n={n ? n : { id: 0, value: 0, color: "#000" }}
+            />
           );
         })}
+        <form onSubmit={createNumber}>
+          <input
+            placeholder="number"
+            type={"number"}
+            onChange={changeNumber}
+            min={0}
+            value={
+              !selectedNumber
+                ? number?.valueNumber.toString()
+                : selectedNumber.valueNumber.toString()
+            }
+            max={36}
+            maxLength={2}
+          />
+          <button type="submit">{selectedNumber ? "update" : "create"}</button>
+        </form>
+      </div>
+      <div className="nums-history">
+        {selectedNumber ? (
+          <div>
+            <button onClick={() => setSelectedNumber(null)}>unselect</button>
+            <button onClick={() => deleteNumber()}>delete</button>
+          </div>
+        ) : null}
       </div>
     </div>
   );

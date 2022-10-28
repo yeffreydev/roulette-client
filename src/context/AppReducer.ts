@@ -94,8 +94,8 @@ const appReducer = (state: AppStateI, action: AppActionI): AppStateI => {
         ...state,
         numbers: {
           loading: false,
-          data: state.numbers.data.map(
-            (item) => item.id === payload.id && payload
+          data: state.numbers.data.map((item) =>
+            item.id === payload.id ? payload : item
           ),
         },
       };

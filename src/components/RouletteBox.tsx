@@ -1,10 +1,10 @@
 import { RouletteNumber } from "../utils/rouletteNumbers/types/types";
-import {orderRouletteNumbers} from '../utils/rouletteNumbers';
-import ViewOrderNumber from './ViewOrderNumber';
+import { orderRouletteNumbers } from "../utils/rouletteNumbers";
+import ViewOrderNumber from "./ViewOrderNumber";
 import "./../media/css/RouletteBox.css";
-export const RN = ({ n }: { n: RouletteNumber }) => {
+export const RN = ({ n, click }: { n: RouletteNumber; click: () => void }) => {
   return (
-    <div className={`r-n-child r-n-value-${n.color}`}>
+    <div onClick={click} className={`r-n-child r-n-value-${n.color}`}>
       <span>{n.value}</span>
     </div>
   );
@@ -26,10 +26,13 @@ const RouletteBox = ({
       </div>
       <div className="r-b-c-body">
         {ns.map((item, index) => {
-          return <RN key={index} n={item} />;
+          return <RN click={() => {}} key={index} n={item} />;
         })}
       </div>
-      <ViewOrderNumber alg_numbs={[3,5,2,8,7,13]} numbers={orderRouletteNumbers} />
+      <ViewOrderNumber
+        alg_numbs={[3, 5, 2, 8, 7, 13]}
+        numbers={orderRouletteNumbers}
+      />
     </div>
   );
 };

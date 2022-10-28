@@ -63,12 +63,8 @@ const getNumbersRouletteBySessionId = async (
   };
 };
 
-const putNumberRoulette = async (
-  token: string,
-  nr: NumberRouletteI,
-  id: string | number
-) => {
-  const res = await fetch(`${numberRouletteApi}/${id}`, {
+const putNumberRoulette = async (token: string, nr: NumberRouletteI) => {
+  const res = await fetch(`${numberRouletteApi}/${nr.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
