@@ -11,9 +11,12 @@ import AppContext from "../context/AppContext";
 import { SessionRouletteI } from "../types/SessionRoulette";
 import { RouletteI } from "../types/Roulette";
 import rouletteApi from "./../api/roulette";
+import numberApi from "./../api/numberRoulette";
 import sessionApi from "./../api/sessionRoulette";
 import actionsRoulette from "../context/actions/roulette";
 import actionsSession from "../context/actions/session";
+import actionsNumber from "../context/actions/number";
+import { NumberRouletteI } from "../types/NumberRoulette";
 
 export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
   const { dispatch, auth, roulettes, focusRoulette } = useContext(AppContext);
@@ -106,8 +109,32 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
   const [session, setSession] = useState<SessionRouletteI | null>({
     name: "",
   });
+  const [number, setNumber] = useState<NumberRouletteI | null>(null);
+
   // pass button actions to home component
 
+  const changeNumber = (e: FormEvent<HTMLInputElement>) =>
+    setNumber({ ...number, numberValue: parseInt(e.currentTarget.value) });
+
+  const createNumber = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    number &&
+      focusSession &&
+      console.log({
+        numberValue: number.numberValue,
+        rouletteId: focusRoulette?.id,
+        sessionId: focusSession.id,
+      });
+    const res =
+      number &&
+      focusSession &&
+      (await numberApi.postNumberRoulette(auth.token, {
+        numberValue: number.numberValue,
+        rouletteId: focusRoulette?.id,
+        sessionId: focusSession.id,
+      }));
+    console.log(res);
+  };
   const createSession = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!focusRoulette) return alert("please select a roulette");
@@ -143,18 +170,19 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
   return (
     <div className="a-h">
       <div className="a-h-1">
-        <div>
+        <form onSubmit={createNumber}>
           <input
             placeholder="number"
             type={"number"}
+            onChange={changeNumber}
             min={0}
             max={36}
             maxLength={2}
           />
-          <button>
+          <button type="submit">
             <MdAdd />
           </button>
-        </div>
+        </form>
 
         <button onClick={openMenu} style={{ cursor: "pointer" }}>
           <FiSettings />

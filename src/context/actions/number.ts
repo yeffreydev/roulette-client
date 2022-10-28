@@ -2,7 +2,7 @@ import { Dispatch } from "react";
 import { NumberRouletteI } from "../../types/NumberRoulette";
 import { ActionType, ActionTypes } from "../types";
 
-//sesssions
+//numbers
 const addNumber = (
   n: NumberRouletteI,
   dispatch: Dispatch<ActionType<NumberRouletteI>>
@@ -47,11 +47,11 @@ const removeNumbers = (dispatch: Dispatch<ActionType<null>>) => {
   });
 };
 
-const sessionActions = {
+const numberActions = {
   addNumber,
   addNumbers,
   updateNumber,
   removeNumber,
   removeNumbers,
 };
-export default sessionActions;
+export default numberActions;
