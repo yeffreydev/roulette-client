@@ -3,5 +3,5 @@ export interface NumberRouletteI {
   rouletteId?: string | number;
   userId?: string | number;
   sessionId?: string | number;
-  numberValue: number;
+  valueNumber: number;
 }

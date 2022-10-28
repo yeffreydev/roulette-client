@@ -17,6 +17,7 @@ import actionsRoulette from "../context/actions/roulette";
 import actionsSession from "../context/actions/session";
 import actionsNumber from "../context/actions/number";
 import { NumberRouletteI } from "../types/NumberRoulette";
+import { getNumberFromRoulette } from "../utils/rouletteNumbers";
 
 export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
   const { dispatch, auth, roulettes, focusRoulette } = useContext(AppContext);
@@ -104,7 +105,7 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
   );
 };
 const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
-  const { auth, focusRoulette, dispatch, sessions, focusSession } =
+  const { auth, focusRoulette, dispatch, sessions, focusSession, numbers } =
     useContext(AppContext);
   const [session, setSession] = useState<SessionRouletteI | null>({
     name: "",
@@ -114,14 +115,14 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
   // pass button actions to home component
 
   const changeNumber = (e: FormEvent<HTMLInputElement>) =>
-    setNumber({ ...number, numberValue: parseInt(e.currentTarget.value) });
+    setNumber({ ...number, valueNumber: parseInt(e.currentTarget.value) });
 
   const createNumber = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     number &&
       focusSession &&
       console.log({
-        numberValue: number.numberValue,
+        numberValue: number.valueNumber,
         rouletteId: focusRoulette?.id,
         sessionId: focusSession.id,
       });
@@ -129,10 +130,13 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
       number &&
       focusSession &&
       (await numberApi.postNumberRoulette(auth.token, {
-        numberValue: number.numberValue,
+        valueNumber: number.valueNumber,
         rouletteId: focusRoulette?.id,
         sessionId: focusSession.id,
       }));
+    if (res?.status === 200) {
+      actionsNumber.addNumber(res.res, dispatch);
+    }
     console.log(res);
   };
   const createSession = async (e: FormEvent<HTMLFormElement>) => {
@@ -164,9 +168,22 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
       actionsSession.addSessions(res.res, dispatch);
     }
   };
+  const getNumbers = async () => {
+    const res =
+      focusSession &&
+      (await numberApi.getNumbersRouletteBySessionId(
+        auth.token,
+        focusSession.id ? focusSession.id : 0
+      ));
+    if (res?.status == 200) {
+      actionsNumber.addNumbers(res.res, dispatch);
+    }
+    console.log(res);
+  };
   useEffect(() => {
     getSessions();
-  }, [focusRoulette]);
+    getNumbers();
+  }, [focusRoulette, focusSession]);
   return (
     <div className="a-h">
       <div className="a-h-1">
@@ -246,38 +263,12 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
         </div>
       </div>
       <div className="nums-history">
-        <RN n={{ id: 0, value: 34, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "black" }} />
-        <RN n={{ id: 4, value: 10, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "green" }} />
-        <RN n={{ id: 0, value: 34, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "black" }} />
-        <RN n={{ id: 4, value: 10, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "green" }} />
-        <RN n={{ id: 0, value: 34, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "black" }} />
-        <RN n={{ id: 4, value: 10, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "green" }} />
-        <RN n={{ id: 0, value: 34, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "black" }} />
-        <RN n={{ id: 4, value: 10, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "green" }} />
-        <RN n={{ id: 0, value: 34, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "black" }} />
-        <RN n={{ id: 4, value: 10, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "green" }} />
-        <RN n={{ id: 0, value: 34, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "black" }} />
-        <RN n={{ id: 4, value: 10, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "green" }} />
-        <RN n={{ id: 0, value: 34, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "black" }} />
-        <RN n={{ id: 4, value: 10, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "green" }} />
-        <RN n={{ id: 0, value: 34, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "black" }} />
-        <RN n={{ id: 4, value: 10, color: "red" }} />
-        <RN n={{ id: 4, value: 10, color: "green" }} />
+        {numbers.data.map((item, index) => {
+          let n = getNumberFromRoulette(item.valueNumber);
+          return (
+            <RN key={index} n={n ? n : { id: 0, value: 0, color: "#000" }} />
+          );
+        })}
       </div>
     </div>
   );
