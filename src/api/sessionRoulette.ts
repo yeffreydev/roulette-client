@@ -42,7 +42,7 @@ const getSessionsRouletteByRouletteId = async (
   token: string,
   id: string | number
 ) => {
-  const res = await fetch(`${sessionRouletteApi}/byRoulette/${id}`, {
+  const res = await fetch(`${sessionRouletteApi}/byRouletteId/${id}`, {
     headers: { "x-access-token": token },
   });
   return {

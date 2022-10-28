@@ -13,11 +13,11 @@ import { RouletteI } from "../types/Roulette";
 import rouletteApi from "./../api/roulette";
 import sessionApi from "./../api/sessionRoulette";
 import actionsRoulette from "../context/actions/roulette";
+import actionsSession from "../context/actions/session";
 
 export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
   const { dispatch, auth, roulettes, focusRoulette } = useContext(AppContext);
   const [roulette, setRoulette] = useState<RouletteI | null>(null);
-  const [session, setSession] = useState<SessionRouletteI | null>(null);
   const cookies = new Cookies();
   const logOut = () => {
     cookies.remove("auth");
@@ -31,12 +31,7 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
       roulette && (await rouletteApi.postRoulette(auth.token, roulette));
     console.log(res);
   };
-  const createSession = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const res =
-      session && (await sessionApi.postSessionRoulette(auth.token, session));
-    console.log(res);
-  };
+
   const changeRouletteName = (e: FormEvent<HTMLInputElement>) =>
     setRoulette({ name: e.currentTarget.value });
   const getRoulettesByUserId = async () => {
@@ -106,7 +101,45 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
   );
 };
 const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
+  const { auth, focusRoulette, dispatch, sessions, focusSession } =
+    useContext(AppContext);
+  const [session, setSession] = useState<SessionRouletteI | null>({
+    name: "",
+  });
   // pass button actions to home component
+
+  const createSession = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!focusRoulette) return alert("please select a roulette");
+    const res =
+      session &&
+      (await sessionApi.postSessionRoulette(auth.token, {
+        name: session.name,
+        rouletteId: focusRoulette?.id,
+      }));
+    console.log(res);
+    if (res?.status === 200) {
+      actionsSession.addSession(res.res, dispatch);
+      actionsSession.addSessionFocus(res.res, dispatch);
+    }
+  };
+  const changeSessionName = (e: FormEvent<HTMLInputElement>) =>
+    setSession({ ...session, name: e.currentTarget.value });
+  const getSessions = async () => {
+    const res =
+      focusRoulette &&
+      (await sessionApi.getSessionsRouletteByRouletteId(
+        auth.token,
+        focusRoulette.id ? focusRoulette.id : ""
+      ));
+    console.log(res);
+    if (res?.status === 200) {
+      actionsSession.addSessions(res.res, dispatch);
+    }
+  };
+  useEffect(() => {
+    getSessions();
+  }, [focusRoulette]);
   return (
     <div className="a-h">
       <div className="a-h-1">
@@ -128,21 +161,33 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
         </button>
       </div>
       <div className="sessions-algs">
-        <div>
-          <span>session 1</span>
-        </div>
-        <div className="session-alg-focus">session 2</div>
-        <div>session 3</div>
-        <div>session 4</div>
+        {sessions.data ? (
+          sessions.data.map((item, index) => {
+            return (
+              <div
+                onClick={() => actionsSession.addSessionFocus(item, dispatch)}
+                className={
+                  focusSession?.id === item.id ? "session-alg-focus" : ""
+                }
+                key={index}
+              >
+                <span>{item.name}</span>
+              </div>
+            );
+          })
+        ) : (
+          <div>please select a roulette</div>
+        )}
+
         <div>
           <button>
             <FaPlus />
           </button>
         </div>
         <div>
-          <form>
-            <input placeholder="new session" />
-            <button>create</button>
+          <form onSubmit={createSession}>
+            <input onChange={changeSessionName} placeholder="new session" />
+            <button type="submit">create</button>
           </form>
         </div>
       </div>
