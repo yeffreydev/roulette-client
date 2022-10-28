@@ -46,6 +46,7 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
   };
   useEffect(() => {
     getRoulettesByUserId();
+    // eslint-disable-next-line
   }, []);
   return (
     <div className="a-h-m" style={{ position: "absolute" }}>
@@ -209,7 +210,7 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
         auth.token,
         focusSession.id ? focusSession.id : 0
       ));
-    if (res?.status == 200) {
+    if (res?.status === 200) {
       algorithmActions.addAlgs(res.res.algs, dispatch);
       actionsNumber.addNumbers(res.res.numbers, dispatch);
     }
@@ -217,6 +218,7 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
   useEffect(() => {
     getSessions();
     getNumbers();
+    // eslint-disable-next-line
   }, [focusRoulette, focusSession]);
   return (
     <div className="a-h">

@@ -5,21 +5,6 @@ import Main from "./../components/Main";
 import AppHeader from "../components/AppHeader";
 import RouletteBox from "../components/RouletteBox";
 import AppContext from "../context/AppContext";
-const rouletteNumbers = [
-  { id: 3, value: 9, color: "green" },
-  { id: 3, value: 9, color: "red" },
-  { id: 3, value: 9, color: "black" },
-  { id: 3, value: 9, color: "red" },
-  { id: 3, value: 9, color: "black" },
-  { id: 3, value: 9, color: "red" },
-  { id: 3, value: 9, color: "black" },
-  { id: 3, value: 9, color: "red" },
-  { id: 3, value: 9, color: "black" },
-  { id: 3, value: 9, color: "red" },
-  { id: 3, value: 9, color: "black" },
-  { id: 3, value: 9, color: "red" },
-  { id: 3, value: 9, color: "black" },
-];
 const Home = () => {
   const { algs } = useContext(AppContext);
   const [homeState, setHomeState] = useState({ IsAHMOpen: false });

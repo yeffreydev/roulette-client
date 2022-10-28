@@ -33,10 +33,7 @@ const RouletteBox = ({ ns, title }: { ns: number[]; title: string }) => {
           );
         })}
       </div>
-      <ViewOrderNumber
-        alg_numbs={[3, 5, 2, 8, 7, 13]}
-        numbers={orderRouletteNumbers}
-      />
+      <ViewOrderNumber alg_numbs={ns} numbers={orderRouletteNumbers} />
     </div>
   );
 };
