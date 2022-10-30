@@ -2,7 +2,7 @@ import "./../media/css/AppHeader.css";
 import { FiSettings, FiLogIn } from "react-icons/fi";
 import { RN } from "./RouletteBox";
 import { IoMdCreate } from "react-icons/io";
-import { FaTimes, FaHistory, FaExchangeAlt, FaPlus } from "react-icons/fa";
+import { FaHistory, FaExchangeAlt, FaPlus } from "react-icons/fa";
 import Cookies from "universal-cookie";
 import { removeToken } from "../context/AppActions";
 import { FormEvent, useContext, useState, useEffect } from "react";
@@ -19,9 +19,13 @@ import { NumberRouletteI, NumberRouletteInputI } from "../types/NumberRoulette";
 import { getNumberFromRoulette } from "../utils/rouletteNumbers";
 import algorithmActions from "../context/actions/algorithm";
 
-export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
-  const { dispatch, auth, roulettes, focusRoulette } = useContext(AppContext);
-  const [roulette, setRoulette] = useState<RouletteI | null>(null);
+export const AppHeaderMenu = () => {
+  const { dispatch, auth, roulettes } = useContext(AppContext);
+  const [roulette, setRoulette] = useState<RouletteI>({
+    id: "",
+    name: "",
+    userId: "",
+  });
   const cookies = new Cookies();
   const logOut = () => {
     cookies.remove("auth");
@@ -33,7 +37,10 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
     e.preventDefault();
     const res =
       roulette && (await rouletteApi.postRoulette(auth.token, roulette));
-    console.log(res);
+    if (res?.status === 200) {
+      actionsRoulette.addRoulette(res.res, dispatch);
+      setRoulette({ name: "" });
+    }
   };
 
   const changeRouletteName = (e: FormEvent<HTMLInputElement>) =>
@@ -50,17 +57,6 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
   }, []);
   return (
     <div className="a-h-m" style={{ position: "absolute" }}>
-      <div className="a-h-m-head">
-        <div>
-          <div>
-            <span>username: </span>
-            <span>{focusRoulette ? focusRoulette.name : "null "}</span>
-          </div>
-        </div>
-        <div className="close-a-h-m" onClick={closeMenu}>
-          <FaTimes />
-        </div>
-      </div>
       <div className="a-h-m-content">
         <div>
           manage Roulette{" "}
@@ -91,7 +87,11 @@ export const AppHeaderMenu = ({ closeMenu }: { closeMenu: () => void }) => {
         </div>
         <div>
           <form onSubmit={createRoulette} action="">
-            <input onChange={changeRouletteName} placeholder="new roulette" />
+            <input
+              onChange={changeRouletteName}
+              value={roulette?.name}
+              placeholder="new roulette"
+            />
             <input type="submit" value="create" />
           </form>
         </div>
@@ -155,6 +155,7 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
     }
     const res = await numberApi.putNumberRoulette(auth.token, selectedNumber);
     if (res.status === 200) {
+      setSelectedNumber(null);
       algorithmActions.addAlgs(res.res.algs, dispatch);
       actionsNumber.updateNumber(selectedNumber, dispatch);
     }

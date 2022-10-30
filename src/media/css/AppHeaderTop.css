@@ -1,0 +1,33 @@
+.ah-top {
+  background-color: #012;
+  width: 95%;
+  height: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #def;
+}
+
+/* app header top media querys */
+@media screen and (min-width: 740px) {
+  .ah-top {
+    width: 80%;
+  }
+}
+@media screen and (min-width: 900px) {
+  .ah-top {
+    width: 80%;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .ah-top {
+    width: 70%;
+  }
+}
+
+@media screen and (min-width: 1700px) {
+  .ah-top {
+    width: 60%;
+  }
+}

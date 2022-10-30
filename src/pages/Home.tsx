@@ -5,21 +5,23 @@ import Main from "./../components/Main";
 import AppHeader from "../components/AppHeader";
 import RouletteBox from "../components/RouletteBox";
 import AppContext from "../context/AppContext";
+import AppHeaderTop from "../components/AppHeaderTop";
 const Home = () => {
   const { algs } = useContext(AppContext);
   const [homeState, setHomeState] = useState({ IsAHMOpen: false });
   //open app heade menu
-  const openAHMenu = () => {
-    setHomeState({ ...homeState, IsAHMOpen: true });
+  const menuAction = () => {
+    setHomeState({ ...homeState, IsAHMOpen: !homeState.IsAHMOpen });
   };
-  const closeAHMenu = () => setHomeState({ ...homeState, IsAHMOpen: false });
   return (
     <>
-      <div style={{ height: "60px", background: "#234" }}></div>
+      <div style={{ height: "60px", background: "#234", position: "relative" }}>
+        <AppHeaderTop isOpen={homeState.IsAHMOpen} menuAction={menuAction} />
+      </div>
       <Main>
-        {homeState.IsAHMOpen ? <AppHeaderMenu closeMenu={closeAHMenu} /> : null}
+        {homeState.IsAHMOpen ? <AppHeaderMenu /> : null}
         <div className="container-home">
-          <AppHeader openMenu={openAHMenu} />
+          <AppHeader openMenu={menuAction} />
           <div className="algs-container">
             {algs.map((item, index) => {
               return (
