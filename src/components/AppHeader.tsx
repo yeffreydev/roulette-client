@@ -285,18 +285,8 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
           </span>
         </div>
       </div>
-      <div className="nums-history">
-        {numbers.data.map((item, index) => {
-          let n = getNumberFromRoulette(item.valueNumber);
-          return (
-            <RN
-              key={index}
-              click={() => selectNumber(item)}
-              n={n ? n : { id: 0, value: 0, color: "#000" }}
-            />
-          );
-        })}
-        <form onSubmit={createNumber}>
+      <div className="nums-container">
+        <form className="new-num-form" onSubmit={createNumber}>
           <input
             placeholder="number"
             type={"number"}
@@ -312,8 +302,23 @@ const AppHeader = ({ openMenu }: { openMenu: () => void }) => {
           />
           <button type="submit">{selectedNumber ? "update" : "create"}</button>
         </form>
+        <div className="nums-history-div">
+          <div className="nums-history">
+            {numbers.data.map((item, index) => {
+              let n = getNumberFromRoulette(item.valueNumber);
+              return (
+                <RN
+                  key={index}
+                  click={() => selectNumber(item)}
+                  n={n ? n : { id: 0, value: 0, color: "#000" }}
+                />
+              );
+            })}
+          </div>
+        </div>
       </div>
-      <div className="nums-history">
+
+      <div className="nums-select">
         {selectedNumber ? (
           <div>
             <button onClick={() => setSelectedNumber(null)}>unselect</button>

@@ -15,16 +15,19 @@
 .sessions-algs {
   display: flex;
   justify-content: flex-start;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+  align-items: center;
 }
 
 .fav-algs > *,
-.sessions-algs > *,
-.nums-history > * {
+.sessions-algs > * {
   margin-right: 30px;
   padding: 3px 5px;
   border-radius: 5px;
+  width: min-content;
   background-color: #def;
+  white-space: nowrap;
 }
 
 .sessions-algs > * {
@@ -67,23 +70,42 @@
 .del-fav-alg span {
   cursor: pointer;
 }
-
-.nums-history {
+.nums-container {
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-  padding: 5px;
+  position: relative;
   width: 100%;
+  border: 2px solid red;
+}
+.new-num-form {
+  width: min-content;
+  display: flex;
+  align-items: center;
+  padding: 0px 5px;
+}
+.nums-history-div {
+  position: relative;
   overflow-x: scroll;
+  flex: 1;
+  display: flex;
+}
+.nums-history {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+  flex-wrap: nowrap;
+  width: 100%;
+  background-color: #012;
 }
 
-.nums-history::-webkit-scrollbar {
+.nums-history-div::-webkit-scrollbar {
   display: none;
 }
 
 .nums-history div {
   font-size: 15px;
   border-radius: 2px;
+  padding: 3px 5px;
   min-width: 15px;
   margin: 5px;
 }
